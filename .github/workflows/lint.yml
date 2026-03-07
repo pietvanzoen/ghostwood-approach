@@ -16,15 +16,18 @@ jobs:
           sudo apt-get install -y luarocks
           sudo luarocks install luacheck
 
-      - name: Install stylua
-        run: |
-          STYLUA_VERSION="2.4.0"
-          curl -fsSL "https://github.com/JohnnyMorganz/StyLua/releases/download/v${STYLUA_VERSION}/stylua-linux-x86_64.zip" -o stylua.zip
-          unzip stylua.zip -d /usr/local/bin
-          chmod +x /usr/local/bin/stylua
-
       - name: Run luacheck
-        run: luacheck source/
+        run: |
+          if [ -d source ]; then
+            luacheck source/
+          else
+            echo "No source/ directory found; skipping luacheck."
+          fi
 
       - name: Check formatting
-        run: stylua --check source/
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: v2.4.0
+          args: --check source/
+        if: hashFiles('source/**/*.lua') != ''
