@@ -1,3 +1,7 @@
+# Playdate build output
+*.pdx/
+*.pdx
+
 # Compiled Lua sources
 luac.out
 
