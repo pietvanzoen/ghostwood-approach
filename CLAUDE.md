@@ -17,13 +17,15 @@ Begin with **milestone 1**: a runnable Playdate project scaffold with a title sc
 
 ## Usage tracking
 
-Before pushing or creating a PR, stage `.claude/usage-log.jsonl` so Claude Code session costs are committed with the work:
+When committing, include `.claude/usage-log.jsonl` by temporarily lifting the assume-unchanged flag:
 
 ```
+git update-index --no-assume-unchanged .claude/usage-log.jsonl
 git add .claude/usage-log.jsonl
+git update-index --assume-unchanged .claude/usage-log.jsonl
 ```
 
-The file is auto-updated at the end of each session via a Stop hook — just make sure it's included in the commit.
+The file is auto-updated after each response via a Stop hook. It's marked `assume-unchanged` to keep `git status` clean between commits.
 
 ## Technical notes
 
