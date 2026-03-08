@@ -1,4 +1,4 @@
-name: Lint
+name: CI
 
 on:
   pull_request:
@@ -13,15 +13,29 @@ jobs:
       - name: Install luacheck
         run: |
           sudo apt-get update
-          sudo apt-get install -y luarocks
+          sudo apt-get install -y lua5.4 luarocks
           sudo luarocks install luacheck
 
       - name: Run luacheck
-        run: luacheck source/
+        run: luacheck source/ spec/
 
       - name: Check formatting
         uses: JohnnyMorganz/stylua-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: v2.4.0
-          args: --check source/
+          args: --check source/ spec/
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install busted
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.4 luarocks
+          sudo luarocks install busted
+
+      - name: Run tests
+        run: busted

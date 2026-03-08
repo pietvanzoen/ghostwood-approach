@@ -10,3 +10,8 @@ globals = {
 ignore = { "631" }
 
 max_cyclomatic_complexity = 10
+
+-- busted test globals
+files["spec/**/*_spec.lua"] = {
+  std = "+busted",
+}

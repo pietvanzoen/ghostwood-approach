@@ -1,0 +1,5 @@
+describe("busted setup", function()
+  it("runs a basic assertion", function()
+    assert.is_true(true)
+  end)
+end)

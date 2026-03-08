@@ -222,14 +222,17 @@ source/
 ### Prerequisites
 
 - [Playdate SDK](https://play.date/dev/) installed
+- [Lua](https://www.lua.org/) and [LuaRocks](https://luarocks.org/) (e.g. `brew install lua luarocks`)
 - [luacheck](https://github.com/mpeterv/luacheck) (`luarocks install luacheck`)
 - [StyLua](https://github.com/JohnnyMorganz/StyLua) (`brew install stylua`)
+- [busted](https://github.com/lunarmodules/busted) (`luarocks install busted`)
 
 ### Commands
 
-- Lint: `luacheck source/`
-- Format: `stylua source/`
-- Format check: `stylua --check source/`
+- Test: `busted`
+- Lint: `luacheck source/ spec/`
+- Format: `stylua source/ spec/`
+- Format check: `stylua --check source/ spec/`
 - Build: `pdc source/ builds/ghostwood-approach.pdx`
 - Run simulator: `open builds/ghostwood-approach.pdx`
 
@@ -246,4 +249,4 @@ source/
 
 ### CI
 
-Pull requests are checked with luacheck and StyLua. Run `luacheck source/` and `stylua --check source/` locally before pushing.
+Pull requests are checked with luacheck, StyLua, and busted. Run `busted`, `luacheck source/ spec/`, and `stylua --check source/ spec/` locally before pushing.

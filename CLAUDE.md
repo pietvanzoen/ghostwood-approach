@@ -10,6 +10,11 @@ I am new to Lua and new to game development. Write clean, well-commented code an
 
 Begin with **milestone 1**: a runnable Playdate project scaffold with a title screen that reads "GHOSTWOOD MUNICIPAL" and transitions to an empty shift screen on button press. Make sure it compiles and runs in the simulator before adding any game logic.
 
+## Playdate references
+
+- **SDK docs:** Validate API usage against https://sdk.play.date/3.0.3/Inside%20Playdate.html
+- **Design guide:** Consider Playdate design best practices at https://help.play.date/developer/designing-for-playdate/
+
 ## Technical notes
 
 - Target: **Playdate hardware** (also test in simulator)
