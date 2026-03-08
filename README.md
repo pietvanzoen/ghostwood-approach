@@ -200,6 +200,12 @@ source/
 
 ---
 
+## TODO
+
+- [x] Track Claude Code usage costs per session (`.claude/usage-log.jsonl`, auto-appended via Stop hook)
+
+---
+
 ## Build order (milestones)
 
 - [ ] **Scaffold** — blank Playdate project runs, shows title screen "GHOSTWOOD MUNICIPAL", starts a shift on button press
@@ -226,6 +232,7 @@ source/
 - [luacheck](https://github.com/mpeterv/luacheck) (`luarocks install luacheck`)
 - [StyLua](https://github.com/JohnnyMorganz/StyLua) (`brew install stylua`)
 - [busted](https://github.com/lunarmodules/busted) (`luarocks install busted`)
+- [jq](https://jqlang.github.io/jq/) (`brew install jq`) — used by the Claude Code usage hook
 
 ### Commands
 

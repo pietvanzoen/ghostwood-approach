@@ -15,6 +15,16 @@ Begin with **milestone 1**: a runnable Playdate project scaffold with a title sc
 - **SDK docs:** Validate API usage against https://sdk.play.date/3.0.3/Inside%20Playdate.html
 - **Design guide:** Consider Playdate design best practices at https://help.play.date/developer/designing-for-playdate/
 
+## Usage tracking
+
+Before pushing or creating a PR, stage `.claude/usage-log.jsonl` so Claude Code session costs are committed with the work:
+
+```
+git add .claude/usage-log.jsonl
+```
+
+The file is auto-updated at the end of each session via a Stop hook — just make sure it's included in the commit.
+
 ## Technical notes
 
 - Target: **Playdate hardware** (also test in simulator)
