@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(luacheck:*)",
+      "Bash(busted:*)",
+      "Bash(stylua:*)",
+      "Bash(luarocks:*)",
+      "Bash(pdc:*)",
+      "Bash(jq:*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/log-usage.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

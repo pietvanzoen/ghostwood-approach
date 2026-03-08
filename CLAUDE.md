@@ -15,6 +15,24 @@ Begin with **milestone 1**: a runnable Playdate project scaffold with a title sc
 - **SDK docs:** Validate API usage against https://sdk.play.date/3.0.3/Inside%20Playdate.html
 - **Design guide:** Consider Playdate design best practices at https://help.play.date/developer/designing-for-playdate/
 
+## Usage tracking
+
+After a fresh clone, mark the file as assume-unchanged so it doesn't show as dirty:
+
+```
+git update-index --assume-unchanged .claude/usage-log.jsonl
+```
+
+When committing, temporarily lift the flag to include the latest data:
+
+```
+git update-index --no-assume-unchanged .claude/usage-log.jsonl
+git add .claude/usage-log.jsonl
+git update-index --assume-unchanged .claude/usage-log.jsonl
+```
+
+The file is auto-updated after each response via a Stop hook. It's marked `assume-unchanged` to keep `git status` clean between commits.
+
 ## Technical notes
 
 - Target: **Playdate hardware** (also test in simulator)
