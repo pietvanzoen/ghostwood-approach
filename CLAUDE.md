@@ -17,21 +17,21 @@ Begin with **milestone 1**: a runnable Playdate project scaffold with a title sc
 
 ## Usage tracking
 
-After a fresh clone, mark the file as assume-unchanged so it doesn't show as dirty:
+After a fresh clone, mark the file with `skip-worktree` so it stays clean in `git status` and doesn't block branch switches:
 
 ```
-git update-index --assume-unchanged .claude/usage-log.jsonl
+git update-index --skip-worktree .claude/usage-log.jsonl
 ```
 
 When committing, temporarily lift the flag to include the latest data:
 
 ```
-git update-index --no-assume-unchanged .claude/usage-log.jsonl
+git update-index --no-skip-worktree .claude/usage-log.jsonl
 git add .claude/usage-log.jsonl
-git update-index --assume-unchanged .claude/usage-log.jsonl
+git update-index --skip-worktree .claude/usage-log.jsonl
 ```
 
-The file is auto-updated after each response via a Stop hook. It's marked `assume-unchanged` to keep `git status` clean between commits.
+The file is auto-updated after each response via a Stop hook.
 
 ## Technical notes
 
