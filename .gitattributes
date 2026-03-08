@@ -1,0 +1,2 @@
+# Mark usage log as generated so GitHub collapses it in PR diffs
+.claude/usage-log.jsonl linguist-generated=true
