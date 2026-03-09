@@ -23,13 +23,9 @@ When creating a PR for a completed milestone:
 
 ## Usage tracking
 
-After a fresh clone, mark the file with `skip-worktree` so it stays clean in `git status` and doesn't block branch switches:
+The file `.claude/usage-log.jsonl` is auto-updated after each response via a Stop hook. It is marked with `skip-worktree` so it stays invisible in `git status` and doesn't block branch switches.
 
-```
-git update-index --skip-worktree .claude/usage-log.jsonl
-```
-
-When committing, temporarily lift the flag to include the latest data:
+**Always include it in commits.** Use this sequence whenever committing (including during `/commit`):
 
 ```
 git update-index --no-skip-worktree .claude/usage-log.jsonl
@@ -37,7 +33,13 @@ git add .claude/usage-log.jsonl
 git update-index --skip-worktree .claude/usage-log.jsonl
 ```
 
-The file is auto-updated after each response via a Stop hook.
+Then stage and commit the rest of the files as normal.
+
+After a fresh clone, set the flag once:
+
+```
+git update-index --skip-worktree .claude/usage-log.jsonl
+```
 
 ## Running the simulator with logs
 
