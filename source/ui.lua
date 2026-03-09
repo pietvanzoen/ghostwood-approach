@@ -9,8 +9,10 @@ UI = {}
 local card_font = gfx.font.new("fonts/Roobert-11-Mono-Condensed")
 
 -- Formats fuel seconds as M:SS (e.g. 90 → "1:30", 5 → "0:05").
+-- Uses ceil so the display holds at the current second until a full
+-- second has elapsed, rather than dropping immediately after each frame.
 local function format_fuel(seconds)
-  local s = math.floor(seconds)
+  local s = math.ceil(seconds)
   return string.format("%d:%02d", math.floor(s / 60), s % 60)
 end
 
@@ -41,8 +43,8 @@ function UI.draw_aircraft_card(aircraft)
   gfx.fillRect(c.X, c.Y, c.TAB_WIDTH, c.HEIGHT)
 
   -- Column dividers
-  gfx.drawLine(c.DIV1_X, c.Y, c.DIV1_X, c.Y + c.HEIGHT)
-  gfx.drawLine(c.DIV2_X, c.Y, c.DIV2_X, c.Y + c.HEIGHT)
+  gfx.drawLine(c.DIV1_X, c.Y, c.DIV1_X, c.Y + c.HEIGHT - 1)
+  gfx.drawLine(c.DIV2_X, c.Y, c.DIV2_X, c.Y + c.HEIGHT - 1)
 
   -- Column centre x positions
   local col1_cx = math.floor((c.X + c.TAB_WIDTH + c.DIV1_X) / 2)

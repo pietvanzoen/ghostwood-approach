@@ -22,7 +22,7 @@ Aircraft call in one by one requesting landing clearance. Each aircraft is repre
 
 - **Callsign** (see carrier list below)
 - **Fuel remaining** (a countdown — creates time pressure)
-- **Altitude** (current altitude in feet — context for approach sequencing)
+- **Altitude** *(planned)* — how close the aircraft is to landing; drives approach sequencing
 - **Situation** (Normal / Low Fuel / Emergency / Priority / Unknown)
 - **Aircraft type** (see aircraft list below)
 - **Notes** (flavor text, sometimes a clue something is wrong)
@@ -203,8 +203,8 @@ source/
 
 ## Build order (milestones)
 
-- [ ] **Scaffold** — blank Playdate project runs, shows title screen "GHOSTWOOD MUNICIPAL", starts a shift on button press
-- [ ] **One aircraft card** — a single aircraft appears with callsign, fuel, situation. Fuel ticks down visibly.
+- [x] **Scaffold** — blank Playdate project runs, shows title screen "GHOSTWOOD MUNICIPAL", starts a shift on button press
+- [x] **One aircraft card** — a single aircraft appears with callsign, fuel, situation. Fuel ticks down visibly.
 - [ ] **Queue & holding** — player can move aircraft between landing queue and holding stack
 - [ ] **Multiple aircraft** — new aircraft arrive over time, player juggles several at once
 - [ ] **Landing resolution** — aircraft at front of queue lands after a timer, shift progresses
