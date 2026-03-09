@@ -18,7 +18,7 @@ Prepare and publish a versioned release of Ghostwood Approach.
 
 6. **Tag the commit** with `git tag vX.Y.Z`.
 
-7. **Push branch and tag** with `git push && git push origin vX.Y.Z`.
+7. **Push branch and tag** with `git push origin HEAD && git push origin vX.Y.Z`.
 
 The push will trigger the release workflow, which builds the `.pdx` and publishes a GitHub release.
 
