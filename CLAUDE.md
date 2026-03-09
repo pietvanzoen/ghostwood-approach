@@ -39,6 +39,16 @@ git update-index --skip-worktree .claude/usage-log.jsonl
 
 The file is auto-updated after each response via a Stop hook.
 
+## Running the simulator with logs
+
+To build and launch the simulator with stdout log capture (enables reading `print()` output):
+
+```
+pdc source/ builds/ghostwood-approach.pdx && "$PLAYDATE_SDK_PATH/bin/Playdate Simulator.app/Contents/MacOS/Playdate Simulator" builds/ghostwood-approach.pdx
+```
+
+Run this as a background task and read the output file to access simulator logs.
+
 ## Technical notes
 
 - Target: **Playdate hardware** (also test in simulator)

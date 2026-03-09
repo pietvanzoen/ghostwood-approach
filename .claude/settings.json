@@ -7,7 +7,9 @@
       "Bash(stylua:*)",
       "Bash(luarocks:*)",
       "Bash(pdc:*)",
-      "Bash(jq:*)"
+      "Bash(open:*)",
+      "Bash(jq:*)",
+      "Bash($PLAYDATE_SDK_PATH/bin/Playdate Simulator.app/Contents/MacOS/Playdate Simulator:*)"
     ]
   },
   "hooks": {

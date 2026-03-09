@@ -22,6 +22,7 @@ Aircraft call in one by one requesting landing clearance. Each aircraft is repre
 
 - **Callsign** (see carrier list below)
 - **Fuel remaining** (a countdown — creates time pressure)
+- **Altitude** (current altitude in feet — context for approach sequencing)
 - **Situation** (Normal / Low Fuel / Emergency / Priority / Unknown)
 - **Aircraft type** (see aircraft list below)
 - **Notes** (flavor text, sometimes a clue something is wrong)
