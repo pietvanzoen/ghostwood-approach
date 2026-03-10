@@ -2,6 +2,10 @@
 
 A card-based air traffic control game for the [Playdate](https://play.date) handheld console, set at **Stillwater Municipal Airport** — a small remote airstrip in the Pacific Northwest with a Twin Peaks-inspired aesthetic (folksy but weird).
 
+<img width="400" height="240" alt="playdate-20260309-212109" src="https://github.com/user-attachments/assets/e6b202ee-bbd0-437a-853b-21c5d650f4f3" />
+<img width="400" height="240" alt="playdate-20260309-212132" src="https://github.com/user-attachments/assets/97d8b4a0-b452-456a-8eef-84bab030f808" />
+
+
 ---
 
 ## Setting
