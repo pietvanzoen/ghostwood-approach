@@ -17,7 +17,7 @@ help:
 	@echo "  make format         Format code with stylua"
 	@echo "  make format-check   Check formatting without changes"
 	@echo "  make sim            Build and run simulator with logs"
-	@echo "  make release        Bump version, tag, and push release (requires VERSION=x.y.z)"
+	@echo "  make release        Bump version and tag release (requires VERSION=x.y.z)"
 	@echo "  make clean          Remove build artifacts"
 	@echo "  make help           Show this message"
 
@@ -53,9 +53,9 @@ release:
 	git add $(PDXINFO); \
 	git commit -m "Release v$(VERSION)"; \
 	git tag v$(VERSION); \
-	git push origin HEAD; \
-	git push origin v$(VERSION); \
-	echo "✓ Released v$(VERSION)"
+	echo ""; \
+	echo "✓ v$(VERSION) tagged. To push:"; \
+	echo "  git push origin HEAD && git push origin v$(VERSION)"
 
 clean:
 	rm -rf $(BUILD_DIR)

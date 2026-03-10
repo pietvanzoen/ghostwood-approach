@@ -45,7 +45,7 @@ To release a new version:
 make release VERSION=x.y.z
 ```
 
-This handles the complete release: updates `source/pdxinfo`, commits with message `Release vX.Y.Z`, tags the commit, and pushes to origin. The GitHub release workflow is triggered automatically.
+This updates `source/pdxinfo`, commits with message `Release vX.Y.Z`, and tags the commit. Review the changes, then push with the command it echoes. The GitHub release workflow is triggered automatically on tag push.
 
 ## Technical notes
 
