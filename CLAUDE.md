@@ -37,6 +37,16 @@ make sim
 
 See all available make targets with `make help`.
 
+## Release workflow
+
+To release a new version:
+
+```
+make release VERSION=x.y.z
+```
+
+This updates `source/pdxinfo` with the new version and auto-increments `buildNumber`. Then commit, tag, and push to trigger the release workflow.
+
 ## Technical notes
 
 - Target: **Playdate hardware** (also test in simulator)
