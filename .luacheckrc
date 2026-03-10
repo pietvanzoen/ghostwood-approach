@@ -11,6 +11,7 @@ globals = {
   "Aircraft",
   "Queue",
   "UI",
+  "Cover",
   "log",
 }
 

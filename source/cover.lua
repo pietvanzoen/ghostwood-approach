@@ -37,7 +37,7 @@ local function draw_ridgelines()
     { 80, 200 },
     { 120, 160 },
     { 160, 190 },
-    { 200, 170 }
+    { 200, 170 },
   }
   for i = 1, #left_ridge - 1 do
     local p1 = left_ridge[i]
@@ -53,7 +53,7 @@ local function draw_ridgelines()
     { 320, 155 },
     { 360, 185 },
     { 400, 165 },
-    { 400, 240 }
+    { 400, 240 },
   }
   for i = 1, #right_ridge - 1 do
     local p1 = right_ridge[i]
@@ -154,12 +154,7 @@ function Cover.draw()
   gfx.setColor(gfx.kColorBlack)
   gfx.setLineWidth(1)
   gfx.drawRect(60, 210, 280, 24)
-  gfx.drawTextAligned(
-    Strings.title.heading,
-    200,
-    215,
-    kTextAlignment.center
-  )
+  gfx.drawTextAligned(Strings.title.heading, 200, 215, kTextAlignment.center)
 end
 
 return Cover

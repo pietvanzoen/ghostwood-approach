@@ -37,6 +37,16 @@ make sim
 
 See all available make targets with `make help`.
 
+## Release workflow
+
+To release a new version:
+
+```
+make release VERSION=x.y.z
+```
+
+This updates `source/pdxinfo`, commits with message `Release vX.Y.Z`, and tags the commit. Review the changes, then push with the command it echoes. The GitHub release workflow is triggered automatically on tag push.
+
 ## Technical notes
 
 - Target: **Playdate hardware** (also test in simulator)
