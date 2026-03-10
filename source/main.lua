@@ -17,6 +17,7 @@ import("constants")
 import("aircraft")
 import("queue")
 import("ui")
+import("cover")
 
 local gfx <const> = playdate.graphics
 
@@ -31,16 +32,11 @@ local shift_state = nil -- { landing = {}, holding = {} }
 local cursor = nil -- { section = Constants.SECTION_LANDING|SECTION_HOLDING, index = 1 }
 local last_time = nil
 
--- Title screen: shows airport name and waits for A press
+-- Title screen: shows tower-centric cover art with prompt to start
 local function draw_title()
-  gfx.clear(gfx.kColorWhite)
-  gfx.drawTextAligned(
-    Strings.title.heading,
-    Constants.SCREEN_CENTER_X,
-    Constants.TITLE_HEADING_Y,
-    kTextAlignment.center
-  )
-  gfx.drawTextAligned(Strings.title.prompt, Constants.SCREEN_CENTER_X, Constants.TITLE_PROMPT_Y, kTextAlignment.center)
+  Cover.draw()
+  gfx.setColor(gfx.kColorBlack)
+  gfx.drawTextAligned(Strings.title.prompt, Constants.SCREEN_CENTER_X, 10, kTextAlignment.center)
 end
 
 -- Moves cursor up, crossing from holding into landing if at the top of holding.

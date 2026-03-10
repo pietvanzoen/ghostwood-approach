@@ -2,6 +2,7 @@
   "permissions": {
     "allow": [
       "Bash(git:*)",
+      "Bash(make:*)",
       "Bash(luacheck:*)",
       "Bash(busted:*)",
       "Bash(stylua:*)",
