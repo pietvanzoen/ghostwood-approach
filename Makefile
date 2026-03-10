@@ -47,8 +47,9 @@ release:
 	fi
 	@current_build=$$(grep buildNumber $(PDXINFO) | sed 's/buildNumber=//'); \
 	new_build=$$(($$current_build + 1)); \
-	perl -i -pe 's/^version=.*/version=$(VERSION)/' $(PDXINFO); \
-	perl -i -pe "s/^buildNumber=.*/buildNumber=$$new_build/" $(PDXINFO); \
+	sed -i.bak 's/version=.*/version=$(VERSION)/' $(PDXINFO); \
+	sed -i.bak "s/buildNumber=.*/buildNumber=$$new_build/" $(PDXINFO); \
+	rm $(PDXINFO).bak; \
 	echo "Updated $(PDXINFO): version=$(VERSION), buildNumber=$$new_build"
 
 clean:
