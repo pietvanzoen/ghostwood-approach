@@ -39,6 +39,8 @@ See all available make targets with `make help`.
 
 ## Release workflow
 
+Only release when changes affect the installed game (features, fixes, UI, mechanics). Do not release for tooling, docs, or build-system-only changes.
+
 To release a new version:
 
 ```
