@@ -41,9 +41,9 @@ The shift ends after all scheduled aircraft for that season have landed (or one 
 
 ## Controls
 
-- **D-pad up/down** — navigate cursor through queue / holding stack
-- **D-pad left/right** — switch focus between landing queue and holding stack
-- **A button** — select / move aircraft / confirm action
+- **D-pad up/down** — navigate cursor through landing list and holding list (cursor crosses section boundary automatically)
+- **A button (on holding card)** — promote aircraft to bottom of landing list (max 3)
+- **A button (on landing card)** — no-op; landing list is immutable once set
 - **B button** — cancel / back
 - **Crank** — scroll through cards (secondary, nice to have)
 
@@ -205,7 +205,7 @@ source/
 
 - [x] **Scaffold** — blank Playdate project runs, shows title screen "STILLWATER APPROACH", starts a shift on button press
 - [x] **One aircraft card** — a single aircraft appears with callsign, fuel, situation. Fuel ticks down visibly.
-- [ ] **Queue & holding** — player can move aircraft between landing queue and holding stack
+- [x] **Queue & holding** — player can move aircraft between landing queue and holding stack
 - [ ] **Multiple aircraft** — new aircraft arrive over time, player juggles several at once
 - [ ] **Landing resolution** — aircraft at front of queue lands after a timer, shift progresses
 - [ ] **Win/lose + score screen** — shift ends, score calculated

@@ -6,11 +6,13 @@ Aircraft = {}
 
 -- Creates a new aircraft record.
 -- fuel is in seconds (e.g. 90 = 1 min 30 sec remaining).
-function Aircraft.new(callsign, fuel, situation)
+-- altitude is in feet (e.g. 8000). Static for now; will become landing timer in Milestone 5.
+function Aircraft.new(callsign, fuel, altitude, situation)
   return {
     callsign = callsign,
     fuel = fuel,
     fuel_max = fuel, -- original fuel, used for display (e.g. fuel bar)
+    altitude = altitude,
     situation = situation,
   }
 end

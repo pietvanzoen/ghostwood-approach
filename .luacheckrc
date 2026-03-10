@@ -9,6 +9,7 @@ globals = {
   "Strings",
   "Constants",
   "Aircraft",
+  "Queue",
   "UI",
   "log",
 }

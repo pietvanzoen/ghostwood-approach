@@ -9,9 +9,12 @@ Strings = {
   },
   shift = {
     placeholder = "SHIFT",
+    landing_label = "LANDING",
+    holding_label = "HOLDING",
   },
   card = {
     callsign_label = "CALLSIGN",
+    altitude_label = "ALT",
     fuel_label = "FUEL",
     situation_label = "STATUS",
   },
