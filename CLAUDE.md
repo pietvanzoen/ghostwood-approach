@@ -27,15 +27,15 @@ Session usage is logged to `.claude/usage-log.jsonl.local` (gitignored) via a St
 
 No manual workflow needed — just commit normally.
 
-## Running the simulator with logs
+## Running the simulator
 
-To build and launch the simulator with stdout log capture (enables reading `print()` output):
+To build and launch the simulator:
 
 ```
-pdc source/ builds/stillwater-approach.pdx && "$PLAYDATE_SDK_PATH/bin/Playdate Simulator.app/Contents/MacOS/Playdate Simulator" builds/stillwater-approach.pdx
+make sim
 ```
 
-Run this as a background task and read the output file to access simulator logs.
+See all available make targets with `make help`.
 
 ## Technical notes
 
