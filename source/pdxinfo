@@ -2,5 +2,5 @@ name=Stillwater Approach
 author=pietvanzoen
 description=Air traffic control game for Playdate
 bundleID=com.pietvanzoen.stillwater-approach
-version=0.2.0
-buildNumber=3
+version=0.3.0
+buildNumber=4
