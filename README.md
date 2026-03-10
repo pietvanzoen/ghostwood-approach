@@ -231,12 +231,13 @@ source/
 
 ### Commands
 
-- Test: `busted`
-- Lint: `luacheck source/ spec/`
-- Format: `stylua source/ spec/`
-- Format check: `stylua --check source/ spec/`
-- Build: `pdc source/ builds/stillwater-approach.pdx`
-- Run simulator: `open builds/stillwater-approach.pdx`
+- Test: `make test`
+- Lint: `make lint`
+- Format: `make format`
+- Format check: `make format-check`
+- Build: `make build`
+- Run simulator: `make sim`
+- See all targets: `make help`
 
 ### Lua conventions
 
@@ -254,4 +255,4 @@ source/
 
 ### CI
 
-Pull requests are checked with luacheck, StyLua, and busted. Run `busted`, `luacheck source/ spec/`, and `stylua --check source/ spec/` locally before pushing.
+Pull requests are checked with luacheck, StyLua, and busted. Run `make test`, `make lint`, and `make format-check` locally before pushing.
