@@ -45,7 +45,7 @@ To release a new version:
 make release VERSION=x.y.z
 ```
 
-This updates `source/pdxinfo` with the new version and auto-increments `buildNumber`. Then commit, tag, and push to trigger the release workflow.
+This handles the complete release: updates `source/pdxinfo`, commits with message `Release vX.Y.Z`, tags the commit, and pushes to origin. The GitHub release workflow is triggered automatically.
 
 ## Technical notes
 
