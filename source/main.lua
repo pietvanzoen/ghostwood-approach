@@ -16,6 +16,8 @@ import("strings")
 import("constants")
 import("aircraft")
 import("queue")
+import("cursor")
+import("shift")
 import("ui")
 import("cover")
 
@@ -39,43 +41,16 @@ local function draw_title()
   gfx.drawTextAligned(Strings.title.prompt, Constants.SCREEN_CENTER_X, Constants.TITLE_PROMPT_Y, kTextAlignment.center)
 end
 
--- Moves cursor up, crossing from holding into landing if at the top of holding.
-local function cursor_up()
-  if cursor.index > 1 then
-    cursor.index = cursor.index - 1
-  elseif cursor.section == Constants.SECTION_HOLDING and #shift_state.landing > 0 then
-    cursor.section = Constants.SECTION_LANDING
-    cursor.index = #shift_state.landing
-  end
-end
-
--- Moves cursor down, crossing from landing into holding if at the bottom of landing.
-local function cursor_down()
-  local cur_list = shift_state[cursor.section]
-  if cursor.index < #cur_list then
-    cursor.index = cursor.index + 1
-  elseif cursor.section == Constants.SECTION_LANDING and #shift_state.holding > 0 then
-    cursor.section = Constants.SECTION_HOLDING
-    cursor.index = 1
-  end
-end
-
 -- Handles d-pad and A button input during a shift.
 local function handle_shift_input()
   if playdate.buttonJustPressed(playdate.kButtonUp) then
-    cursor_up()
+    Cursor.up(cursor, shift_state)
   elseif playdate.buttonJustPressed(playdate.kButtonDown) then
-    cursor_down()
+    Cursor.down(cursor, shift_state)
   elseif playdate.buttonJustPressed(playdate.kButtonA) then
     if cursor.section == Constants.SECTION_HOLDING then
       Queue.promote(shift_state, cursor.index)
-      if #shift_state.holding == 0 then
-        -- Holding emptied: move focus to the aircraft just promoted into landing
-        cursor.section = Constants.SECTION_LANDING
-        cursor.index = #shift_state.landing
-      else
-        cursor.index = math.min(cursor.index, #shift_state.holding)
-      end
+      Cursor.after_promote(cursor, shift_state)
     end
     -- A on landing card: no-op
   end
@@ -99,9 +74,7 @@ function playdate.update()
     draw_title()
     if playdate.buttonJustPressed(playdate.kButtonA) then
       -- Initialise shift with timed arrivals; landing and holding start empty
-      shift_state = Queue.new(Constants.MAX_LANDING)
-      shift_state.elapsed = 0
-      shift_state.schedule = {
+      local schedule = {
         { time = 0, aircraft = Aircraft.new("STW4", 90, 3000, "Normal") },
         { time = 15, aircraft = Aircraft.new("SVC12", 120, 8000, "Cargo Shift") },
         { time = 40, aircraft = Aircraft.new("TNK81", 75, 5000, "Low Fuel") },
@@ -109,8 +82,8 @@ function playdate.update()
         { time = 100, aircraft = Aircraft.new("CAM1", 60, 4000, "Medical") },
         { time = 130, aircraft = Aircraft.new("PTA7", 110, 7000, "Normal") },
       }
-      shift_state.next_arrival = 1
-      cursor = { section = Constants.SECTION_HOLDING, index = 1 }
+      shift_state = Shift.new(schedule)
+      cursor = Cursor.new()
       last_time = playdate.getCurrentTimeMilliseconds()
       state = STATE_SHIFT
     end
