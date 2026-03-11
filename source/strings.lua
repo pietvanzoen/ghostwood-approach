@@ -7,15 +7,15 @@ Strings = {
     heading = "STILLWATER APPROACH",
     prompt = "press Ⓐ to begin shift",
   },
+  card = {
+    altitude_prefix = "ALT: ",
+    fuel_prefix = "F: ",
+  },
   shift = {
     placeholder = "SHIFT",
     landing_label = "LANDING",
     holding_label = "HOLDING",
-  },
-  card = {
-    callsign_label = "CALLSIGN",
-    altitude_label = "ALT",
-    fuel_label = "FUEL",
-    situation_label = "STATUS",
+    empty_landing = "no aircraft on approach",
+    empty_holding = "no aircraft holding",
   },
 }

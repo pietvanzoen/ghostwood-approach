@@ -69,19 +69,26 @@ local function handle_shift_input()
   elseif playdate.buttonJustPressed(playdate.kButtonA) then
     if cursor.section == Constants.SECTION_HOLDING then
       Queue.promote(shift_state, cursor.index)
-      -- Keep cursor in bounds after promotion may have shrunk the holding list
-      cursor.index = math.min(cursor.index, math.max(1, #shift_state.holding))
+      if #shift_state.holding == 0 then
+        -- Holding emptied: move focus to the aircraft just promoted into landing
+        cursor.section = Constants.SECTION_LANDING
+        cursor.index = #shift_state.landing
+      else
+        cursor.index = math.min(cursor.index, #shift_state.holding)
+      end
     end
     -- A on landing card: no-op
   end
 end
 
--- Shift screen: tick fuel on all aircraft, handle input, redraw
+-- Shift screen: tick fuel on all aircraft, handle arrivals, handle input, redraw
 local function update_shift()
   local now = playdate.getCurrentTimeMilliseconds()
   local dt = (now - last_time) / 1000.0
   last_time = now
 
+  shift_state.elapsed = shift_state.elapsed + dt
+  Queue.check_arrivals(shift_state, shift_state.elapsed)
   Queue.tick_all(shift_state, dt)
   handle_shift_input()
   UI.draw_shift_screen(shift_state, cursor)
@@ -91,13 +98,19 @@ function playdate.update()
   if state == STATE_TITLE then
     draw_title()
     if playdate.buttonJustPressed(playdate.kButtonA) then
-      -- Initialise queue: 1 landing + 3 holding to demonstrate the landing cap
+      -- Initialise shift with timed arrivals; landing and holding start empty
       shift_state = Queue.new(Constants.MAX_LANDING)
-      shift_state.landing[1] = Aircraft.new("STILLWATER AIR 4", 90, 3000, "Normal")
-      shift_state.holding[1] = Aircraft.new("SVC 12", 120, 8000, "Cargo Shift")
-      shift_state.holding[2] = Aircraft.new("TANKER 81", 75, 5000, "Low Fuel")
-      shift_state.holding[3] = Aircraft.new("QUILLAYUTE 3", 140, 6000, "Normal")
-      cursor = { section = Constants.SECTION_LANDING, index = 1 }
+      shift_state.elapsed = 0
+      shift_state.schedule = {
+        { time = 0, aircraft = Aircraft.new("STW4", 90, 3000, "Normal") },
+        { time = 15, aircraft = Aircraft.new("SVC12", 120, 8000, "Cargo Shift") },
+        { time = 40, aircraft = Aircraft.new("TNK81", 75, 5000, "Low Fuel") },
+        { time = 70, aircraft = Aircraft.new("QUL3", 140, 6000, "Normal") },
+        { time = 100, aircraft = Aircraft.new("CAM1", 60, 4000, "Medical") },
+        { time = 130, aircraft = Aircraft.new("PTA7", 110, 7000, "Normal") },
+      }
+      shift_state.next_arrival = 1
+      cursor = { section = Constants.SECTION_HOLDING, index = 1 }
       last_time = playdate.getCurrentTimeMilliseconds()
       state = STATE_SHIFT
     end

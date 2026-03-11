@@ -210,7 +210,7 @@ source/
 - [x] **Scaffold** — blank Playdate project runs, shows title screen "STILLWATER APPROACH", starts a shift on button press
 - [x] **One aircraft card** — a single aircraft appears with callsign, fuel, situation. Fuel ticks down visibly.
 - [x] **Queue & holding** — player can move aircraft between landing queue and holding stack
-- [ ] **Multiple aircraft** — new aircraft arrive over time, player juggles several at once
+- [x] **Multiple aircraft** — new aircraft arrive over time, player juggles several at once
 - [ ] **Landing resolution** — aircraft at front of queue lands after a timer, shift progresses
 - [ ] **Win/lose + score screen** — shift ends, score calculated
 - [ ] **Season: Spring** — full Spring shift with traffic generation and conditions

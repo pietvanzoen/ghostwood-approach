@@ -86,6 +86,70 @@ describe("Queue", function()
     end)
   end)
 
+  describe("Queue.check_arrivals", function()
+    it("does not add aircraft before their scheduled time", function()
+      local q = Queue.new()
+      q.schedule = { { time = 10, aircraft = make_aircraft("GA4", 90) } }
+      q.next_arrival = 1
+      Queue.check_arrivals(q, 5)
+      assert.equal(0, #q.holding)
+    end)
+
+    it("adds aircraft with time = 0 at elapsed = 0", function()
+      local q = Queue.new()
+      local a = make_aircraft("GA4", 90)
+      q.schedule = { { time = 0, aircraft = a } }
+      q.next_arrival = 1
+      Queue.check_arrivals(q, 0)
+      assert.equal(1, #q.holding)
+      assert.equal(a, q.holding[1])
+    end)
+
+    it("adds all aircraft sharing the same arrival time together", function()
+      local q = Queue.new()
+      local a1 = make_aircraft("GA4", 90)
+      local a2 = make_aircraft("SVC1", 60)
+      q.schedule = { { time = 5, aircraft = a1 }, { time = 5, aircraft = a2 } }
+      q.next_arrival = 1
+      Queue.check_arrivals(q, 5)
+      assert.equal(2, #q.holding)
+    end)
+
+    it("adds aircraft at exactly their scheduled time", function()
+      local q = Queue.new()
+      local a = make_aircraft("GA4", 90)
+      q.schedule = { { time = 10, aircraft = a } }
+      q.next_arrival = 1
+      Queue.check_arrivals(q, 9)
+      assert.equal(0, #q.holding)
+      Queue.check_arrivals(q, 10)
+      assert.equal(1, #q.holding)
+      assert.equal(a, q.holding[1])
+    end)
+
+    it("does not re-add aircraft when called again with the same elapsed", function()
+      local q = Queue.new()
+      local a = make_aircraft("GA4", 90)
+      q.schedule = { { time = 5, aircraft = a } }
+      q.next_arrival = 1
+      Queue.check_arrivals(q, 5)
+      Queue.check_arrivals(q, 5)
+      assert.equal(1, #q.holding)
+    end)
+
+    it("advances next_arrival past spawned entries and leaves future ones", function()
+      local q = Queue.new()
+      local a1 = make_aircraft("GA4", 90)
+      local a2 = make_aircraft("SVC1", 60)
+      q.schedule = { { time = 5, aircraft = a1 }, { time = 20, aircraft = a2 } }
+      q.next_arrival = 1
+      Queue.check_arrivals(q, 10)
+      assert.equal(1, #q.holding)
+      assert.equal(a1, q.holding[1])
+      assert.equal(2, q.next_arrival)
+    end)
+  end)
+
   describe("Queue.tick_all", function()
     it("ticks all aircraft in landing by dt", function()
       local q = Queue.new()

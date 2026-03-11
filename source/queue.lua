@@ -6,8 +6,10 @@ Queue = {}
 
 -- Returns a new queue state with empty landing and holding lists.
 -- max_landing caps how many aircraft can be in the landing list (default 3).
+-- schedule and next_arrival are initialised to safe defaults so check_arrivals
+-- can be called on a fresh queue without error.
 function Queue.new(max_landing)
-  return { landing = {}, holding = {}, max_landing = max_landing or 3 }
+  return { landing = {}, holding = {}, max_landing = max_landing or 3, schedule = {}, next_arrival = 1 }
 end
 
 -- Moves the aircraft at `index` in holding to the bottom of landing.
@@ -22,6 +24,21 @@ function Queue.promote(state, index)
   local aircraft = table.remove(state.holding, index)
   state.landing[#state.landing + 1] = aircraft
   return true
+end
+
+-- Appends any scheduled aircraft whose arrival time <= elapsed to holding.
+-- state.schedule: sorted array of { time = <seconds>, aircraft = <Aircraft> }
+-- state.next_arrival: index of the next unprocessed schedule entry (starts at 1)
+function Queue.check_arrivals(state, elapsed)
+  while state.next_arrival <= #state.schedule do
+    local entry = state.schedule[state.next_arrival]
+    if entry.time <= elapsed then
+      state.holding[#state.holding + 1] = entry.aircraft
+      state.next_arrival = state.next_arrival + 1
+    else
+      break -- schedule is sorted, no need to look further
+    end
+  end
 end
 
 -- Advances time by dt seconds for every aircraft in both lists.
