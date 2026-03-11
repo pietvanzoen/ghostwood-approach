@@ -24,6 +24,21 @@ function Queue.promote(state, index)
   return true
 end
 
+-- Appends any scheduled aircraft whose arrival time <= elapsed to holding.
+-- state.schedule: sorted array of { time = <seconds>, aircraft = <Aircraft> }
+-- state.next_arrival: index of the next unprocessed schedule entry (starts at 1)
+function Queue.check_arrivals(state, elapsed)
+  while state.next_arrival <= #state.schedule do
+    local entry = state.schedule[state.next_arrival]
+    if entry.time <= elapsed then
+      state.holding[#state.holding + 1] = entry.aircraft
+      state.next_arrival = state.next_arrival + 1
+    else
+      break -- schedule is sorted, no need to look further
+    end
+  end
+end
+
 -- Advances time by dt seconds for every aircraft in both lists.
 function Queue.tick_all(state, dt)
   for _, aircraft in ipairs(state.landing) do
