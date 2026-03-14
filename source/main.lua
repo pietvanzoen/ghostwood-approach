@@ -100,9 +100,12 @@ local function update_shift()
         -- Landing list emptied; shift focus to holding.
         cursor.section = Constants.SECTION_HOLDING
         cursor.index = 1
+      elseif #shift_state.landing == 0 then
+        -- Both lists empty (all aircraft landed); park cursor safely.
+        cursor.index = 1
       else
-        -- Clamp to the new list length (minimum 1 so cursor stays in bounds when non-empty).
-        cursor.index = math.max(1, math.min(cursor.index, #shift_state.landing))
+        -- Landing list still has aircraft; clamp index to new length.
+        cursor.index = math.min(cursor.index, #shift_state.landing)
       end
     end
   end
