@@ -90,11 +90,7 @@ install: install-hooks
 	fi
 
 install-hooks:
-	@if [ -d .git ]; then \
-		ln -sf ../../.claude/hooks/pre-commit.sh .git/hooks/pre-commit; \
-	else \
-		echo "Skipping hook install: no .git directory found"; \
-	fi
+	ln -sf ../../.claude/hooks/pre-commit.sh .git/hooks/pre-commit
 
 clean:
 	rm -rf $(BUILD_DIR)
