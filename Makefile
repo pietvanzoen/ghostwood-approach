@@ -63,27 +63,38 @@ install: install-hooks
 	@OS=$$(uname -s); \
 	if [ "$$OS" = "Darwin" ]; then \
 		echo "Installing via Homebrew..."; \
-		brew install lua luarocks stylua jq; \
+		brew install lua@5.4 luarocks stylua jq; \
 		luarocks install luacheck; \
 		luarocks install busted; \
 	elif [ "$$OS" = "Linux" ]; then \
 		echo "Installing via apt + luarocks..."; \
-		apt-get install -y lua5.4 luarocks jq unzip; \
+		apt-get install -y lua5.4 luarocks curl jq unzip; \
 		luarocks install luacheck; \
 		luarocks install busted; \
 		if ! command -v stylua >/dev/null 2>&1; then \
 			curl -sL "https://github.com/JohnnyMorganz/StyLua/releases/download/v2.4.0/stylua-linux-x86_64.zip" \
 				-o /tmp/stylua.zip; \
-			unzip -o /tmp/stylua.zip -d /usr/local/bin/ stylua; \
-			chmod +x /usr/local/bin/stylua; \
+			if [ "$$(id -u)" = "0" ]; then \
+				STYLUA_BIN=/usr/local/bin; \
+			else \
+				STYLUA_BIN=$${HOME}/.local/bin; \
+				mkdir -p "$$STYLUA_BIN"; \
+			fi; \
+			unzip -o /tmp/stylua.zip -d "$$STYLUA_BIN" stylua; \
+			chmod +x "$$STYLUA_BIN/stylua"; \
 			rm /tmp/stylua.zip; \
+			echo "stylua installed to $$STYLUA_BIN — ensure it is in your PATH"; \
 		fi; \
 	else \
 		echo "Unsupported OS: $$OS"; exit 1; \
 	fi
 
 install-hooks:
-	ln -sf ../../.claude/hooks/pre-commit.sh .git/hooks/pre-commit
+	@if [ -d .git ]; then \
+		ln -sf ../../.claude/hooks/pre-commit.sh .git/hooks/pre-commit; \
+	else \
+		echo "Skipping hook install: no .git directory found"; \
+	fi
 
 clean:
 	rm -rf $(BUILD_DIR)
