@@ -21,7 +21,7 @@ touch "$TRACKED"
 tmp=$(mktemp)
 while IFS= read -r line; do
   [ -z "$line" ] && continue
-  sid=$(echo "$line" | jq -r '.session_id' 2>/dev/null || true)
+  sid=$(printf '%s\n' "$line" | jq -r '.session_id' 2>/dev/null || true)
   [ -z "$sid" ] || [ "$sid" = "null" ] && continue
   if ! grep -qF "\"session_id\":\"$sid\"" "$LOCAL"; then
     echo "$line"

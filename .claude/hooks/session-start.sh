@@ -8,4 +8,4 @@ fi
 
 echo '{"async": true, "asyncTimeout": 300000}'
 
-make -C "$CLAUDE_PROJECT_DIR" install
+make -C "$CLAUDE_PROJECT_DIR" install >&2

@@ -227,8 +227,7 @@ source/
 ### Setup
 
 ```bash
-make install       # install dev dependencies (macOS/Linux)
-make install-hooks # install git hooks
+make install  # install dev dependencies and git hooks (macOS/Linux)
 ```
 
 `make install` handles Lua, LuaRocks, luacheck, busted, StyLua, and jq. The [Playdate SDK](https://play.date/dev/) must be installed separately for `make build` and `make sim`.
