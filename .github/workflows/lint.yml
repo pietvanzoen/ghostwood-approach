@@ -39,3 +39,17 @@ jobs:
 
       - name: Run tests
         run: busted
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Playdate SDK
+        uses: pd-rs/get-playdate-sdk@0.4
+        with:
+          version: 3.0.3
+          gcc: false
+
+      - name: Build
+        run: make build
