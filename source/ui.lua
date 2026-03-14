@@ -22,12 +22,12 @@ end
 --   │▓▓│  STW4  │ ALT: 3000 │  F: 1:30 │  Normal          │
 --   └──┴────────┴───────────┴──────────┴──────────────────┘
 --   ┌──┬────────┬───────────┬──────────┬──────────────────┐
---   │▓▓│  STW4  │ ALT▼ 2450 │  F: 1:15 │  Normal          │  ← on approach
+--   │▓▓│  STW4  │ ALTv 2450 │  F: 1:15 │  Normal          │  ← on approach
 --   └──┴────────┴───────────┴──────────┴──────────────────┘
 --
 -- Labels are inline with values; no separate header row.
 -- If focused is true, the card border is drawn thicker to indicate selection.
--- If on_approach is true, the altitude label shows a down-arrow (▼) to signal
+-- If on_approach is true, the altitude label shows a down-arrow (v) to signal
 -- the value is counting toward 0 (touchdown). Holding cards use the plain "ALT: " label.
 function UI.draw_aircraft_card(aircraft, x, y, focused, on_approach)
   local c = Constants.CARD
