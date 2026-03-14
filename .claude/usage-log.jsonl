@@ -14,4 +14,4 @@
 {"session_id":"df42b009-cc1e-43d2-b20c-19b598d3e259","date":"2026-03-11T04:13:19Z","energy_wh":8.576,"models":{"claude-sonnet-4-6":{"input_tokens":28,"output_tokens":4341,"cache_read_tokens":352541,"cache_creation_tokens":159604}}}
 {"session_id":"6372c0a2-7fd7-4e31-a54b-867dc4ce562b","date":"2026-03-11T05:09:14Z","energy_wh":129.329,"models":{"claude-sonnet-4-6":{"input_tokens":237,"output_tokens":42495,"cache_read_tokens":8408927,"cache_creation_tokens":235251}}}
 {"session_id":"0552e5d2-e8e8-4d2d-93e2-f2bdacb75dc9","date":"2026-03-11T05:29:20Z","energy_wh":44.412,"models":{"claude-sonnet-4-6":{"input_tokens":1100,"output_tokens":13512,"cache_read_tokens":2544562,"cache_creation_tokens":456928}}}
-{"session_id":"6661215e-c132-4ebc-adf5-0cc962f0be8b","date":"2026-03-14T14:30:52Z","energy_wh":92.406,"models":{"claude-sonnet-4-6":{"input_tokens":306,"output_tokens":1850,"cache_read_tokens":7180850,"cache_creation_tokens":134540}}}
+{"session_id":"6661215e-c132-4ebc-adf5-0cc962f0be8b","date":"2026-03-14T14:34:12Z","energy_wh":95.989,"models":{"claude-sonnet-4-6":{"input_tokens":314,"output_tokens":1890,"cache_read_tokens":7464720,"cache_creation_tokens":135644}}}

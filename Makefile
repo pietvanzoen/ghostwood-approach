@@ -90,7 +90,7 @@ install: install-hooks
 	fi
 
 install-hooks:
-	ln -sf ../../.claude/hooks/pre-commit.sh .git/hooks/pre-commit
+	ln -sf ../../_scripts/pre-commit.sh .git/hooks/pre-commit
 
 clean:
 	rm -rf $(BUILD_DIR)
