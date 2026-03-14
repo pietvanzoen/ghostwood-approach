@@ -1,4 +1,4 @@
-.PHONY: build test lint format format-check sim help clean release
+.PHONY: build test lint format format-check sim help clean release install-hooks
 
 PDC = pdc
 SIMULATOR = $(PLAYDATE_SDK_PATH)/bin/Playdate Simulator.app/Contents/MacOS/Playdate Simulator
@@ -18,6 +18,7 @@ help:
 	@echo "  make format-check   Check formatting without changes"
 	@echo "  make sim            Build and run simulator with logs"
 	@echo "  make release        Bump version and tag release (requires VERSION=x.y.z)"
+	@echo "  make install-hooks  Install git hooks (run once after cloning)"
 	@echo "  make clean          Remove build artifacts"
 	@echo "  make help           Show this message"
 
@@ -56,6 +57,9 @@ release:
 	echo ""; \
 	echo "✓ v$(VERSION) tagged. To push:"; \
 	echo "  git push origin HEAD && git push origin v$(VERSION)"
+
+install-hooks:
+	ln -sf ../../.claude/hooks/pre-commit.sh .git/hooks/pre-commit
 
 clean:
 	rm -rf $(BUILD_DIR)

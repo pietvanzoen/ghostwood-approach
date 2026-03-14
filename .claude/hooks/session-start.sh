@@ -40,3 +40,6 @@ if ! command -v jq &>/dev/null; then
 fi
 
 echo "All dependencies installed."
+
+# Install git hooks
+make -C "$CLAUDE_PROJECT_DIR" install-hooks
