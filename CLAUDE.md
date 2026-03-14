@@ -18,6 +18,16 @@ When completing a milestone, before creating a PR:
 2. **Update `CLAUDE.md`** — advance the current milestone, and capture any new design decisions, conventions, or testing gotchas discovered during the session that future sessions should know about.
 3. **Create the PR** — include the milestone name in the PR title (e.g. "Milestone 2: one aircraft card").
 
+## Repository
+
+**GitHub:** https://github.com/pietvanzoen/stillwater-approach
+
+Use the GitHub REST API to access PRs and comments when `gh` is unavailable:
+```
+https://api.github.com/repos/pietvanzoen/stillwater-approach/pulls?state=open
+https://api.github.com/repos/pietvanzoen/stillwater-approach/pulls/<n>/comments
+```
+
 ## Playdate references
 
 - **SDK docs:** Validate API usage against https://sdk.play.date/3.0.3/Inside%20Playdate.html
