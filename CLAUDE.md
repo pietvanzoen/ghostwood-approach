@@ -59,6 +59,16 @@ This updates `source/pdxinfo`, commits with message `Release vX.Y.Z`, and tags t
 - Tables as objects pattern: `function Aircraft.new(...)`
 - Time-based fuel tick using `playdate.getCurrentTimeMilliseconds()` or a frame counter
 
+## Reference docs
+
+A `docs/` folder holds research and reference material that informed game design decisions. When a session involves non-trivial external research — ATC protocols, aviation conventions, hardware behaviour, real-world data — consider saving the findings to a file in `docs/` rather than discarding them. Good candidates:
+
+- Real-world research that shaped a mechanic (e.g. holding altitudes, approach procedures)
+- External rules or standards the game approximates (FAA regs, scoring conventions)
+- Design rationale that isn't obvious from the code alone
+
+Keep filenames specific (e.g. `atc-altitude-reference.md`, not `notes.md`). Existing docs: [`docs/atc-altitude-reference.md`](docs/atc-altitude-reference.md).
+
 ## Game design decisions
 
 - **Altitude is AGL** (Above Ground Level, feet above the runway). 0 = touchdown. Never use MSL in game code or UI. See [`docs/atc-altitude-reference.md`](docs/atc-altitude-reference.md) for the ATC research behind this.
