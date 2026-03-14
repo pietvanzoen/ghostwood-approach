@@ -72,9 +72,7 @@ install: install-hooks
 		luarocks install luacheck; \
 		luarocks install busted; \
 		if ! command -v stylua >/dev/null 2>&1; then \
-			STYLUA_VERSION=$$(curl -s https://api.github.com/repos/JohnnyMorganz/StyLua/releases/latest \
-				| grep '"tag_name"' | sed 's/.*"tag_name": "\(.*\)".*/\1/'); \
-			curl -sL "https://github.com/JohnnyMorganz/StyLua/releases/download/$${STYLUA_VERSION}/stylua-linux-x86_64.zip" \
+			curl -sL "https://github.com/JohnnyMorganz/StyLua/releases/download/v2.4.0/stylua-linux-x86_64.zip" \
 				-o /tmp/stylua.zip; \
 			unzip -o /tmp/stylua.zip -d /usr/local/bin/ stylua; \
 			chmod +x /usr/local/bin/stylua; \
