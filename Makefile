@@ -59,7 +59,7 @@ release:
 	echo "✓ v$(VERSION) tagged. To push:"; \
 	echo "  git push origin HEAD && git push origin v$(VERSION)"
 
-install:
+install: install-hooks
 	@OS=$$(uname -s); \
 	if [ "$$OS" = "Darwin" ]; then \
 		echo "Installing via Homebrew..."; \
