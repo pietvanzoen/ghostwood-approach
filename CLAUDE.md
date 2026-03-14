@@ -8,7 +8,7 @@ I am new to Lua and new to game development. Write clean, well-commented code an
 
 ## Current milestone
 
-**Milestone 5: Landing resolution** — aircraft at the front of the queue lands after a timer, shift progresses. See `README.md` for the full milestone list.
+**Milestone 6: Win/lose + score screen** — shift ends, score calculated. See `README.md` for the full milestone list.
 
 ## Pull request instructions
 
@@ -58,3 +58,12 @@ This updates `source/pdxinfo`, commits with message `Release vX.Y.Z`, and tags t
 - No external libraries — standard SDK only
 - Tables as objects pattern: `function Aircraft.new(...)`
 - Time-based fuel tick using `playdate.getCurrentTimeMilliseconds()` or a frame counter
+
+## Game design decisions
+
+- **Altitude is AGL** (Above Ground Level, feet above the runway). 0 = touchdown. Never use MSL in game code or UI. See [`docs/atc-altitude-reference.md`](docs/atc-altitude-reference.md) for the ATC research behind this.
+- **Holding aircraft**: altitude is static. **Landing queue aircraft**: altitude descends at `Constants.APPROACH_RATE` ft/sec. `Queue.land_front` is called when `landing[1].altitude <= 0`.
+
+## Testing notes
+
+- `Constants`, `Strings`, etc. are Playdate-style globals loaded via `import` — they are **not** available in the busted test environment automatically. Spec files that test modules depending on these globals must `require("source.constants")` (etc.) explicitly at the top, or tests will error with "attempt to index global 'Constants' (a nil value)".
