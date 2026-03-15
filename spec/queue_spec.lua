@@ -202,6 +202,83 @@ describe("Queue", function()
     end)
   end)
 
+  describe("Queue.resolve_touchdown", function()
+    it("returns false when landing is empty", function()
+      local q = Queue.new()
+      assert.is_false(Queue.resolve_touchdown(q, 1))
+    end)
+
+    it("returns false when front aircraft altitude is above 0", function()
+      local q = Queue.new()
+      local a = make_aircraft("STW4", 90)
+      a.altitude = 100
+      q.landing = { a }
+      assert.is_false(Queue.resolve_touchdown(q, 1))
+    end)
+
+    it("sets touchdown_timer to TOUCHDOWN_DWELL when aircraft first reaches altitude 0", function()
+      local q = Queue.new()
+      local a = make_aircraft("STW4", 90)
+      a.altitude = 0
+      q.landing = { a }
+      Queue.resolve_touchdown(q, 1)
+      assert.equal(Constants.TOUCHDOWN_DWELL, a.touchdown_timer)
+    end)
+
+    it("returns false on the first tick at altitude 0 (dwell not yet expired)", function()
+      local q = Queue.new()
+      local a = make_aircraft("STW4", 90)
+      a.altitude = 0
+      q.landing = { a }
+      assert.is_false(Queue.resolve_touchdown(q, 1))
+    end)
+
+    it("counts down the dwell timer each tick", function()
+      local q = Queue.new()
+      local a = make_aircraft("STW4", 90)
+      a.altitude = 0
+      q.landing = { a }
+      Queue.resolve_touchdown(q, 0) -- initialises timer to TOUCHDOWN_DWELL
+      Queue.resolve_touchdown(q, 1) -- counts down by 1
+      assert.equal(Constants.TOUCHDOWN_DWELL - 1, a.touchdown_timer)
+    end)
+
+    it("does not remove aircraft while dwell timer is still positive", function()
+      local q = Queue.new()
+      local a = make_aircraft("STW4", 90)
+      a.altitude = 0
+      q.landing = { a }
+      Queue.resolve_touchdown(q, 0) -- start timer
+      Queue.resolve_touchdown(q, Constants.TOUCHDOWN_DWELL - 0.5) -- nearly expired
+      assert.equal(1, #q.landing)
+    end)
+
+    it("calls land_front and returns true when dwell timer expires", function()
+      local q = Queue.new()
+      local a = make_aircraft("STW4", 90)
+      a.altitude = 0
+      q.landing = { a }
+      Queue.resolve_touchdown(q, 0) -- start timer
+      local result = Queue.resolve_touchdown(q, Constants.TOUCHDOWN_DWELL)
+      assert.is_true(result)
+      assert.equal(0, #q.landing)
+      assert.equal(1, #q.landed)
+    end)
+
+    it("does not affect the holding list", function()
+      local q = Queue.new()
+      local hold = make_aircraft("QUL3", 140)
+      local a = make_aircraft("STW4", 90)
+      a.altitude = 0
+      q.landing = { a }
+      q.holding = { hold }
+      Queue.resolve_touchdown(q, 0)
+      Queue.resolve_touchdown(q, Constants.TOUCHDOWN_DWELL)
+      assert.equal(1, #q.holding)
+      assert.equal(hold, q.holding[1])
+    end)
+  end)
+
   describe("Queue.tick_all", function()
     it("ticks all aircraft in landing by dt", function()
       local q = Queue.new()

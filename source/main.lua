@@ -16,6 +16,7 @@ import("strings")
 import("constants")
 import("aircraft")
 import("queue")
+import("cursor")
 import("ui")
 import("cover")
 
@@ -39,43 +40,16 @@ local function draw_title()
   gfx.drawTextAligned(Strings.title.prompt, Constants.SCREEN_CENTER_X, Constants.TITLE_PROMPT_Y, kTextAlignment.center)
 end
 
--- Moves cursor up, crossing from holding into landing if at the top of holding.
-local function cursor_up()
-  if cursor.index > 1 then
-    cursor.index = cursor.index - 1
-  elseif cursor.section == Constants.SECTION_HOLDING and #shift_state.landing > 0 then
-    cursor.section = Constants.SECTION_LANDING
-    cursor.index = #shift_state.landing
-  end
-end
-
--- Moves cursor down, crossing from landing into holding if at the bottom of landing.
-local function cursor_down()
-  local cur_list = shift_state[cursor.section]
-  if cursor.index < #cur_list then
-    cursor.index = cursor.index + 1
-  elseif cursor.section == Constants.SECTION_LANDING and #shift_state.holding > 0 then
-    cursor.section = Constants.SECTION_HOLDING
-    cursor.index = 1
-  end
-end
-
 -- Handles d-pad and A button input during a shift.
 local function handle_shift_input()
   if playdate.buttonJustPressed(playdate.kButtonUp) then
-    cursor_up()
+    Cursor.up(cursor, shift_state)
   elseif playdate.buttonJustPressed(playdate.kButtonDown) then
-    cursor_down()
+    Cursor.down(cursor, shift_state)
   elseif playdate.buttonJustPressed(playdate.kButtonA) then
     if cursor.section == Constants.SECTION_HOLDING then
       Queue.promote(shift_state, cursor.index)
-      if #shift_state.holding == 0 then
-        -- Holding emptied: move focus to the aircraft just promoted into landing
-        cursor.section = Constants.SECTION_LANDING
-        cursor.index = #shift_state.landing
-      else
-        cursor.index = math.min(cursor.index, #shift_state.holding)
-      end
+      Cursor.clamp_after_promote(cursor, shift_state)
     end
     -- A on landing card: no-op
   end
@@ -91,35 +65,11 @@ local function update_shift()
   Queue.check_arrivals(shift_state, shift_state.elapsed)
   Queue.tick_all(shift_state, dt)
 
-  -- Landing resolution: front aircraft descends to altitude 0 → touches down.
-  -- Display "Landed" for TOUCHDOWN_DWELL seconds before clearing the runway.
-  if #shift_state.landing > 0 and shift_state.landing[1].altitude <= 0 then
-    local front = shift_state.landing[1]
-    if front.touchdown_timer == nil then
-      -- Start dwell: aircraft has just touched down
-      front.touchdown_timer = Constants.TOUCHDOWN_DWELL
-    else
-      -- Count down dwell timer
-      front.touchdown_timer = front.touchdown_timer - dt
-      if front.touchdown_timer <= 0 then
-        -- Dwell complete: remove aircraft from landing queue
-        Queue.land_front(shift_state)
-        -- Keep cursor valid after the aircraft is removed.
-        if cursor.section == Constants.SECTION_LANDING then
-          if #shift_state.landing == 0 and #shift_state.holding > 0 then
-            -- Landing list emptied; shift focus to holding.
-            cursor.section = Constants.SECTION_HOLDING
-            cursor.index = 1
-          elseif #shift_state.landing == 0 then
-            -- Both lists empty (all aircraft landed); park cursor safely.
-            cursor.index = 1
-          else
-            -- Landing list still has aircraft; clamp index to new length.
-            cursor.index = math.min(cursor.index, #shift_state.landing)
-          end
-        end
-      end
-    end
+  -- Landing resolution: manage touchdown dwell and runway clearing.
+  -- Returns true when land_front is called so we can keep the cursor valid.
+  local landed = Queue.resolve_touchdown(shift_state, dt)
+  if landed then
+    Cursor.clamp_after_land(cursor, shift_state)
   end
 
   handle_shift_input()

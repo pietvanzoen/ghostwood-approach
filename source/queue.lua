@@ -54,6 +54,29 @@ function Queue.land_front(state)
   return aircraft
 end
 
+-- Manages the touchdown dwell for the front landing aircraft.
+-- When the front aircraft reaches altitude 0, starts a TOUCHDOWN_DWELL-second timer.
+-- Counts the timer down each tick; when it expires, calls land_front to clear the runway.
+-- Returns true if land_front was called this tick (so the caller can adjust the cursor),
+-- false in all other cases (no aircraft, still descending, dwell not yet expired).
+function Queue.resolve_touchdown(state, dt)
+  if #state.landing == 0 or state.landing[1].altitude > 0 then
+    return false
+  end
+  local front = state.landing[1]
+  if front.touchdown_timer == nil then
+    -- Aircraft just touched down: start the dwell timer.
+    front.touchdown_timer = Constants.TOUCHDOWN_DWELL
+    return false
+  end
+  front.touchdown_timer = front.touchdown_timer - dt
+  if front.touchdown_timer <= 0 then
+    Queue.land_front(state)
+    return true
+  end
+  return false
+end
+
 -- Advances time by dt seconds for every aircraft in both lists.
 -- Aircraft in the landing queue also lose altitude at Constants.APPROACH_RATE ft/sec,
 -- simulating the approach descent. Holding aircraft maintain their assigned altitude.
