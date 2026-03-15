@@ -238,8 +238,8 @@ describe("Queue", function()
       local a = make_aircraft("STW4", 90)
       a.altitude = 0
       q.landing = { a }
-      Queue.resolve_touchdown(q, 0)      -- initialises timer to TOUCHDOWN_DWELL
-      Queue.resolve_touchdown(q, 1)      -- counts down by 1
+      Queue.resolve_touchdown(q, 0) -- initialises timer to TOUCHDOWN_DWELL
+      Queue.resolve_touchdown(q, 1) -- counts down by 1
       assert.equal(Constants.TOUCHDOWN_DWELL - 1, a.touchdown_timer)
     end)
 
@@ -248,7 +248,7 @@ describe("Queue", function()
       local a = make_aircraft("STW4", 90)
       a.altitude = 0
       q.landing = { a }
-      Queue.resolve_touchdown(q, 0)                         -- start timer
+      Queue.resolve_touchdown(q, 0) -- start timer
       Queue.resolve_touchdown(q, Constants.TOUCHDOWN_DWELL - 0.5) -- nearly expired
       assert.equal(1, #q.landing)
     end)
@@ -258,7 +258,7 @@ describe("Queue", function()
       local a = make_aircraft("STW4", 90)
       a.altitude = 0
       q.landing = { a }
-      Queue.resolve_touchdown(q, 0)                    -- start timer
+      Queue.resolve_touchdown(q, 0) -- start timer
       local result = Queue.resolve_touchdown(q, Constants.TOUCHDOWN_DWELL)
       assert.is_true(result)
       assert.equal(0, #q.landing)
