@@ -60,27 +60,6 @@ local function handle_shift_input()
   end
 end
 
--- Checks whether any aircraft in landing or holding has run out of fuel.
--- Returns the callsign of the first offending aircraft, or nil if none.
-local function find_out_of_fuel(s)
-  for _, aircraft in ipairs(s.landing) do
-    if Aircraft.is_out_of_fuel(aircraft) then
-      return aircraft.callsign
-    end
-  end
-  for _, aircraft in ipairs(s.holding) do
-    if Aircraft.is_out_of_fuel(aircraft) then
-      return aircraft.callsign
-    end
-  end
-  return nil
-end
-
--- Returns true when every scheduled aircraft has landed and the queues are empty.
-local function shift_is_complete(s)
-  return s.next_arrival > #s.schedule and #s.landing == 0 and #s.holding == 0
-end
-
 -- Shift screen: tick fuel on all aircraft, handle arrivals, handle input, redraw.
 -- Transitions to STATE_SCORE on win or lose.
 local function update_shift()
@@ -100,7 +79,7 @@ local function update_shift()
   end
 
   -- Lose condition: an aircraft ran out of fuel.
-  local failed = find_out_of_fuel(shift_state)
+  local failed = Queue.find_out_of_fuel(shift_state)
   if failed then
     local partial = Scoring.calculate(shift_state.landed)
     score_result = {
@@ -116,7 +95,7 @@ local function update_shift()
   end
 
   -- Win condition: all aircraft have landed.
-  if shift_is_complete(shift_state) then
+  if Queue.is_complete(shift_state) then
     score_result = Scoring.calculate(shift_state.landed)
     score_result.win = true
     score_result.failed_callsign = nil

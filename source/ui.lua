@@ -82,56 +82,64 @@ end
 --   win             (boolean) true = shift complete, false = shift failed
 --   failed_callsign (string|nil) callsign of aircraft that ran out of fuel (lose only)
 function UI.draw_score_screen(result)
+  -- Layout constants for the score screen
+  local MARGIN_X = 10 -- horizontal margin for divider lines
+  local LABEL_X = 40 -- left edge of stat labels
+  local VALUE_X = Constants.SCREEN_WIDTH - 40 -- right edge of stat values
+  local TOP_Y = 20 -- y of the heading
+  local HEADING_H = 18 -- vertical space below heading
+  local DIVIDER_H = 8 -- vertical space after a divider line
+  local FAIL_ROW_H = 14 -- vertical space for the failure callsign row
+  local ROW_H = 14 -- height of each stat row
+  local EXTRA_GAP = 4 -- extra gap before the total divider
+  local PROMPT_Y = Constants.SCREEN_HEIGHT - 20 -- y of the "press A" prompt
+
   gfx.clear(gfx.kColorWhite)
   gfx.setFont(card_font)
 
   local cx = Constants.SCREEN_CENTER_X
-  local y = 20
+  local y = TOP_Y
 
   -- Heading: "SHIFT COMPLETE" or "SHIFT FAILED"
   local heading = result.win and Strings.score.win_heading or Strings.score.lose_heading
   gfx.drawTextAligned(heading, cx, y, kTextAlignment.center)
-  y = y + 18
+  y = y + HEADING_H
 
   -- Divider
-  gfx.drawLine(10, y, Constants.SCREEN_WIDTH - 10, y)
-  y = y + 8
+  gfx.drawLine(MARGIN_X, y, Constants.SCREEN_WIDTH - MARGIN_X, y)
+  y = y + DIVIDER_H
 
   -- On a failed shift, show which aircraft caused the failure
   if not result.win and result.failed_callsign then
     local msg = result.failed_callsign .. " " .. Strings.score.out_of_fuel
     gfx.drawTextAligned(msg, cx, y, kTextAlignment.center)
-    y = y + 14
+    y = y + FAIL_ROW_H
   end
 
-  -- Stats: label left-aligned, value right-aligned in a fixed column
-  local label_x = 40
-  local value_x = Constants.SCREEN_WIDTH - 40
-  local row_h = 14
-
-  gfx.drawText(Strings.score.landed_label, label_x, y)
-  gfx.drawTextAligned(tostring(result.landed_count), value_x, y, kTextAlignment.right)
-  y = y + row_h
+  -- Stats: label left-aligned, value right-aligned
+  gfx.drawText(Strings.score.landed_label, LABEL_X, y)
+  gfx.drawTextAligned(tostring(result.landed_count), VALUE_X, y, kTextAlignment.right)
+  y = y + ROW_H
 
   -- Efficiency as a percentage (0–100%)
   local eff_pct = math.floor(result.avg_fuel_pct * 100)
-  gfx.drawText(Strings.score.efficiency_label, label_x, y)
-  gfx.drawTextAligned(tostring(eff_pct) .. "%", value_x, y, kTextAlignment.right)
-  y = y + row_h
+  gfx.drawText(Strings.score.efficiency_label, LABEL_X, y)
+  gfx.drawTextAligned(tostring(eff_pct) .. "%", VALUE_X, y, kTextAlignment.right)
+  y = y + ROW_H
 
-  gfx.drawText(Strings.score.near_miss_label, label_x, y)
-  gfx.drawTextAligned(tostring(result.near_miss_count), value_x, y, kTextAlignment.right)
-  y = y + row_h + 4
+  gfx.drawText(Strings.score.near_miss_label, LABEL_X, y)
+  gfx.drawTextAligned(tostring(result.near_miss_count), VALUE_X, y, kTextAlignment.right)
+  y = y + ROW_H + EXTRA_GAP
 
   -- Divider above score total
-  gfx.drawLine(10, y, Constants.SCREEN_WIDTH - 10, y)
-  y = y + 8
+  gfx.drawLine(MARGIN_X, y, Constants.SCREEN_WIDTH - MARGIN_X, y)
+  y = y + DIVIDER_H
 
-  gfx.drawText(Strings.score.score_label, label_x, y)
-  gfx.drawTextAligned(tostring(result.total), value_x, y, kTextAlignment.right)
+  gfx.drawText(Strings.score.score_label, LABEL_X, y)
+  gfx.drawTextAligned(tostring(result.total), VALUE_X, y, kTextAlignment.right)
 
   -- Prompt at bottom
-  gfx.drawTextAligned(Strings.score.prompt, cx, Constants.SCREEN_HEIGHT - 20, kTextAlignment.center)
+  gfx.drawTextAligned(Strings.score.prompt, cx, PROMPT_Y, kTextAlignment.center)
 
   gfx.setFont(gfx.getSystemFont())
 end

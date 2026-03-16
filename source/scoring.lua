@@ -5,19 +5,18 @@
 Scoring = {}
 
 -- Calculates the score for a completed shift from a list of landed aircraft.
+-- Returns { landed_count, avg_fuel_pct, near_miss_count, total }.
 --
--- Scoring formula:
---   base       = 50  (awarded for completing the shift)
+-- An empty landed list (no aircraft landed) returns total = 0; the base score
+-- requires at least one aircraft to have landed.
+--
+-- Scoring formula (when landed is non-empty):
+--   base       = 50  (for landing at least one aircraft)
 --   efficiency = floor(50 * avg_fuel_pct)  (0..50, based on average fuel remaining)
---   penalty    = 10 * near_miss_count      (deducted for each near-miss landing)
+--   penalty    = 10 * near_miss_count      (deducted per near-miss landing)
 --   total      = max(0, base + efficiency - penalty)
 --
 -- A "near miss" is any aircraft that landed with fuel < CRITICAL_FUEL_PCT of its starting fuel.
--- Returns a result table:
---   landed_count   (number)  total aircraft that landed
---   avg_fuel_pct   (number)  average fuel fraction remaining (0.0–1.0)
---   near_miss_count (number) aircraft that landed critically low on fuel
---   total          (number)  final score (0–100)
 function Scoring.calculate(landed)
   local n = #landed
   if n == 0 then

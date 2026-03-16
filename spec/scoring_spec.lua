@@ -31,11 +31,9 @@ describe("Scoring.calculate", function()
     assert.are.equal(100, result.total)
   end)
 
-  it("scores 50 (base only) when all aircraft land with no fuel remaining", function()
-    -- fuel = 0, fuel_max > 0 → avg_fuel_pct = 0 → efficiency = 0
-    -- base(50) + 0 - 0 = 50  (no near-miss because fuel == 0 which is not < 10%)
-    -- Actually 0/fuel_max = 0 < 0.1, so these ARE near misses
-    -- With 2 near misses: 50 + 0 - 20 = 30
+  it("applies near-miss penalties when all aircraft land on empty tanks", function()
+    -- fuel = 0 → fuel_pct = 0.0 < CRITICAL_FUEL_PCT (0.1) → each counts as a near miss
+    -- base(50) + efficiency(0) - penalty(2 * 10) = 30
     local landed = {
       make_aircraft(0, 90),
       make_aircraft(0, 120),

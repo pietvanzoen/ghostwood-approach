@@ -77,6 +77,28 @@ function Queue.resolve_touchdown(state, dt)
   return false
 end
 
+-- Returns the callsign of the first aircraft in landing or holding that has run out of fuel,
+-- or nil if no aircraft is out of fuel.
+function Queue.find_out_of_fuel(state)
+  for _, aircraft in ipairs(state.landing) do
+    if Aircraft.is_out_of_fuel(aircraft) then
+      return aircraft.callsign
+    end
+  end
+  for _, aircraft in ipairs(state.holding) do
+    if Aircraft.is_out_of_fuel(aircraft) then
+      return aircraft.callsign
+    end
+  end
+  return nil
+end
+
+-- Returns true when the shift is complete: all scheduled aircraft have arrived
+-- and both landing and holding queues are empty.
+function Queue.is_complete(state)
+  return state.next_arrival > #state.schedule and #state.landing == 0 and #state.holding == 0
+end
+
 -- Advances time by dt seconds for every aircraft in both lists.
 -- Aircraft in the landing queue also lose altitude at Constants.APPROACH_RATE ft/sec,
 -- simulating the approach descent. Holding aircraft maintain their assigned altitude.

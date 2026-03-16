@@ -279,6 +279,64 @@ describe("Queue", function()
     end)
   end)
 
+  describe("Queue.find_out_of_fuel", function()
+    it("returns nil when all aircraft have fuel", function()
+      local q = Queue.new()
+      q.landing = { make_aircraft("A", 90) }
+      q.holding = { make_aircraft("B", 60) }
+      assert.is_nil(Queue.find_out_of_fuel(q))
+    end)
+
+    it("returns the callsign of a fuel-exhausted aircraft in landing", function()
+      local q = Queue.new()
+      q.landing = { make_aircraft("STW4", 0) }
+      assert.equal("STW4", Queue.find_out_of_fuel(q))
+    end)
+
+    it("returns the callsign of a fuel-exhausted aircraft in holding", function()
+      local q = Queue.new()
+      q.holding = { make_aircraft("QUL3", 0) }
+      assert.equal("QUL3", Queue.find_out_of_fuel(q))
+    end)
+
+    it("returns nil when queues are empty", function()
+      local q = Queue.new()
+      assert.is_nil(Queue.find_out_of_fuel(q))
+    end)
+  end)
+
+  describe("Queue.is_complete", function()
+    it("returns false when aircraft are still in landing", function()
+      local q = Queue.new()
+      q.schedule = {}
+      q.next_arrival = 1
+      q.landing = { make_aircraft("A", 90) }
+      assert.is_false(Queue.is_complete(q))
+    end)
+
+    it("returns false when aircraft are still in holding", function()
+      local q = Queue.new()
+      q.schedule = {}
+      q.next_arrival = 1
+      q.holding = { make_aircraft("A", 90) }
+      assert.is_false(Queue.is_complete(q))
+    end)
+
+    it("returns false when schedule has unprocessed arrivals", function()
+      local q = Queue.new()
+      q.schedule = { { time = 999, aircraft = make_aircraft("A", 90) } }
+      q.next_arrival = 1
+      assert.is_false(Queue.is_complete(q))
+    end)
+
+    it("returns true when schedule is exhausted and all queues are empty", function()
+      local q = Queue.new()
+      q.schedule = { { time = 0, aircraft = make_aircraft("A", 90) } }
+      q.next_arrival = 2 -- past the end of schedule
+      assert.is_true(Queue.is_complete(q))
+    end)
+  end)
+
   describe("Queue.tick_all", function()
     it("ticks all aircraft in landing by dt", function()
       local q = Queue.new()
