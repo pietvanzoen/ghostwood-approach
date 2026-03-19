@@ -15,7 +15,7 @@ I am new to Lua and new to game development. Write clean, well-commented code an
 When completing a milestone, before creating a PR:
 
 1. **Update `README.md`** — check off the milestone checkbox (`- [ ]` → `- [x]`), and update any game mechanic descriptions affected by the work (e.g. altitude behaviour, controls, scoring). Keep README the source of truth for how the game actually works.
-2. **Update `CLAUDE.md`** — advance the current milestone, and capture any new design decisions, conventions, or testing gotchas discovered during the session that future sessions should know about.
+2. **Update `AGENTS.md`** — advance the current milestone, and capture any new design decisions, conventions, or testing gotchas discovered during the session that future sessions should know about.
 3. **Create the PR** — include the milestone name in the PR title (e.g. "Milestone 2: one aircraft card").
 
 ## Repository
@@ -101,6 +101,8 @@ See [`docs/atc-altitude-reference.md`](docs/atc-altitude-reference.md) for an ex
 - **Dwell state**: Use aircraft property (e.g., `touchdown_timer`) for transient UI states (e.g., showing "Landed"); keeps state colocated with data.
 - **Scoring formula**: base(50) + efficiency(0–50, avg fuel % remaining) − near_miss_penalty(10 each). Score clamped to 0. Failed shifts always score 0 regardless of efficiency. A "near miss" = fuel < 10% of `fuel_max` at touchdown (`Constants.CRITICAL_FUEL_PCT`). `fuel_max` is stored on Aircraft.new for display and scoring.
 - **Win/lose state machine**: Lose check runs before win check each tick so a fuel-out on the final landing frame resolves as a loss, not a win. Score screen (`STATE_SCORE`) transitions back to `STATE_TITLE` on A button; all shift/score state is cleared.
+- **Dwell state and fuel-out**: `Queue.find_out_of_fuel` skips aircraft with `touchdown_timer` set — they are safely on the ground and must not trigger a failure even if fuel reads 0.
+- **Debug shortcuts**: Use `if DEBUG and playdate.buttonJustPressed(playdate.kButtonB) then` pattern for quick in-shift testing shortcuts. Remove before merging.
 
 ## Playdate font limitations
 
@@ -109,4 +111,4 @@ See [`docs/atc-altitude-reference.md`](docs/atc-altitude-reference.md) for an ex
 ## Testing notes
 
 - `Constants`, `Strings`, etc. are Playdate-style globals loaded via `import` — they are **not** available in the busted test environment automatically. Spec files that test modules depending on these globals must `require("source.constants")` (etc.) explicitly at the top, or tests will error with "attempt to index global 'Constants' (a nil value)".
-- Lua 5.5 compatibility: `make install` may fail with luacheck/busted if Lua 5.5 is installed; tests can still run via workaround but re-running `make install` sometimes needed.
+- On macOS, luacheck and busted are installed as Homebrew formulae (not luarocks) to avoid lua version conflicts. If `make lint`/`make test` fail after a Homebrew update, run `make install` again (it uses `--force` to reinstall).
