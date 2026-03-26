@@ -99,6 +99,7 @@ See [`docs/atc-altitude-reference.md`](docs/atc-altitude-reference.md) for an ex
 - **Notes bar**: Drawn in `UI.draw_shift_screen` via `focused_aircraft()` helper. A thin divider line at `NOTES_BAR_Y - 4`, notes text at `NOTES_BAR_Y`. Only drawn when the focused aircraft has `notes ~= nil`. This keeps the card list uncluttered while still surfacing flavor text.
 - **Spring schedule design**: 6 aircraft, arrivals every 25–35 s, generous fuel loads (30–70 s margins if promoted immediately). Altitudes 2500–4000 ft. Two Medical situations (GCS1 SAR, CAM1 medevac) provide moderate time pressure. PTA7 carries the weird escalation note.
 - **`flavor.lua`** (planned, Milestone 11): When there are multiple seasons with complex escalation, extract flavor text into a dedicated module. For now, notes live inline in `seasons.lua`.
+- **Weird escalation pattern:** Aircraft notes field holds flavor text (radio chatter, cryptic hints). Surface via notes bar at bottom of shift screen when focused. Example: PTA7 mentions the Packard road in Spring.
 
 ## Game design decisions
 
@@ -120,5 +121,6 @@ See [`docs/atc-altitude-reference.md`](docs/atc-altitude-reference.md) for an ex
 ## Testing notes
 
 - `Constants`, `Strings`, etc. are Playdate-style globals loaded via `import` — they are **not** available in the busted test environment automatically. Spec files that test modules depending on these globals must `require("source.constants")` (etc.) explicitly at the top, or tests will error with "attempt to index global 'Constants' (a nil value)".
+- Test assertions: use `assert.equal(...)` consistently across all specs (not `assert.equals`). This keeps assertions uniform for grepping and readability.
 - On macOS, luacheck and busted are installed as Homebrew formulae (not luarocks) to avoid lua version conflicts. If `make lint`/`make test` fail after a Homebrew update, run `make install` again (it uses `--force` to reinstall).
 - **Lua truthiness**: Only `nil` and `false` are falsy. `0`, `""`, and `{}` are all truthy. This differs from C/JS/Python — guard conditions like `== nil` and `not x` behave differently when `x` is `0`.
