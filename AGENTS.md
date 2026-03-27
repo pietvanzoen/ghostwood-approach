@@ -4,7 +4,7 @@ See [README.md](README.md) for game design, seasonal shifts, scoring, carriers, 
 
 ## Context
 
-I am new to Lua and new to game development. Write clean, well-commented code and explain key decisions as you go.
+I am new to Lua and new to game development. Write clean code and explain key decisions as you go.
 
 ## Current milestone
 
@@ -113,6 +113,11 @@ See [`docs/atc-altitude-reference.md`](docs/atc-altitude-reference.md) for an ex
 - **Dwell state and fuel-out**: `Queue.find_out_of_fuel` skips aircraft with `touchdown_timer` set — they are safely on the ground and must not trigger a failure even if fuel reads 0.
 - **Debug shortcuts**: Use `if DEBUG and playdate.buttonJustPressed(playdate.kButtonB) then` pattern for quick in-shift testing shortcuts. Remove before merging.
 - **Failed shift score_result**: `avg_fuel_pct` is set to 0 on the lose path (not carried from partial stats) so the score screen never shows a misleading efficiency % alongside total = 0.
+
+## Code style
+
+- **Comments**: only where the code can't speak for itself — non-obvious *why* decisions, behavioral gotchas, magic-number semantics, subtle ordering constraints. No module boilerplate, no function descriptions that restate the name, no section labels in drawing code.
+- **No type annotations**: LuaLS `@param`/`@return` blocks are not used. The modules are small enough that good names and existing constants carry the types. Don't add annotation blocks.
 
 ## Playdate font limitations
 
