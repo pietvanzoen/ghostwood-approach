@@ -12,7 +12,8 @@ Flag these:
 - Anything likely to cause frame drops at 60 fps (allocations in the update loop, redundant draws)
 - Game balance issues visible from the code (e.g. fuel loads that make a shift unwinnable)
 
-Do not flag these:
+Do not flag these (already enforced by tooling or intentional):
+- Line length — enforced at 120 columns by `make lint` (luacheck + stylua.toml)
 - Missing comments on self-evident code — comments are intentionally minimal
 - Missing type annotations — this project does not use LuaLS `@param`/`@return` blocks
 - Abstractions that could be DRYed up but work correctly

@@ -117,6 +117,7 @@ See [`docs/atc-altitude-reference.md`](docs/atc-altitude-reference.md) for an ex
 ## Code style
 
 - **Comments**: only where the code can't speak for itself — non-obvious *why* decisions, behavioral gotchas, magic-number semantics, subtle ordering constraints. No module boilerplate, no function descriptions that restate the name, no section labels in drawing code.
+- **Line length**: 120 columns, enforced by `make lint` (luacheck `max_line_length = 120`, matching `stylua.toml`). Applies to comments as well as code — wrap long comments manually if needed.
 - **No type annotations**: LuaLS `@param`/`@return` blocks are not used. The modules are small enough that good names and existing constants carry the types. Don't add annotation blocks.
 
 ## Playdate font limitations
